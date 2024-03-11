@@ -23,6 +23,6 @@ spec:
     http:
       paths:
         - backend:
-          serviceName: web2
+          serviceName: web2+ 
           servicePort: 80
     
