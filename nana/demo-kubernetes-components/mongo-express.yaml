@@ -1,8 +1,7 @@
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mongo-express-deployment
+  name: mongo-express
   labels:
     app: mongo-express
 spec:
@@ -18,13 +17,6 @@ spec:
       containers:
       - name: mongo-express
         image: mongo-express
-        resources:
-          requests:
-            memory: "1Gi"
-            cpu: "1000m"
-          limits:
-            memory: "2Gi"
-            cpu: "2000m"
         ports:
         - containerPort: 8081
         env:
@@ -34,17 +26,15 @@ spec:
               name: mongodb-secret
               key: mongo-root-username
         - name: ME_CONFIG_MONGODB_ADMINPASSWORD
-          valueFrom:
+          valueFrom: 
             secretKeyRef:
               name: mongodb-secret
               key: mongo-root-password
         - name: ME_CONFIG_MONGODB_SERVER
-          valueFrom:
+          valueFrom: 
             configMapKeyRef:
               name: mongodb-configmap
               key: database_url
-        - name: ME_CONFIG_OPTIONS_EDITORTHEME
-          value: "rubyblue"
 ---
 apiVersion: v1
 kind: Service
@@ -53,9 +43,9 @@ metadata:
 spec:
   selector:
     app: mongo-express
-  type: LoadBalancer
+  type: LoadBalancer  
   ports:
-  - protocol: TCP
-    port: 8081
-    targetPort: 8081
-    nodePort: 30000 # must be between 30000-32767
+    - protocol: TCP
+      port: 8081
+      targetPort: 8081
+      nodePort: 30000
